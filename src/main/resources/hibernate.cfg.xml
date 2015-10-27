@@ -1,0 +1,18 @@
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost/aso_database</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password"></property>
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="show_sql">true</property>
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		
+		<mapping class="br.unisinos.aso.model.Exam"></mapping>
+		<mapping class="br.unisinos.aso.model.Patient"></mapping>
+		<mapping class="br.unisinos.aso.model.Disease"></mapping>
+		<mapping class="br.unisinos.aso.model.Medication"></mapping>
+		<mapping class="br.unisinos.aso.model.Treatment"></mapping>
+	</session-factory>
+</hibernate-configuration>
