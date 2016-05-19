@@ -1,15 +1,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans	
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+		http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
 
-	<tx:annotation-driven proxy-target-class="true"/>
+	<tx:annotation-driven proxy-target-class="true" />
 	<context:component-scan base-package="br.unisinos.aso.*" />
 
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
@@ -20,7 +22,8 @@
 		<property name="password" value="" />
 	</bean>
 
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
@@ -40,5 +43,23 @@
 			</props>
 		</property>
 	</bean>
+
+	<jaxrs:server id="patientService" address="/patient">
+		<jaxrs:serviceBeans>
+			<bean class="br.unisinos.aso.service.PatientService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+	
+	<jaxrs:server id="asoService" address="/aggregated">
+		<jaxrs:serviceBeans>
+			<bean class="br.unisinos.aso.service.ASOService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
 
 </beans>

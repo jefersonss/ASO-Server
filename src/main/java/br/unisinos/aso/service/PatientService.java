@@ -1,29 +1,27 @@
 package br.unisinos.aso.service;
 
+import java.math.BigInteger;
 import java.util.*;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.unisinos.aso.ct.PatientServiceCT;
+import br.unisinos.aso.dao.DiseaseDAO;
 import br.unisinos.aso.dao.PatientDAO;
 import br.unisinos.aso.model.Patient;
 import br.unisinos.aso.transformer.TransformedInfo;
 import br.unisinos.aso.transformer.Transformer;
 
-@Path("/patient")
 @Service
-public class PatientService {
+public class PatientService implements PatientServiceCT{
 	
 	@Autowired
 	private PatientDAO patientDAO;
 	@Autowired
 	private Transformer transformer;
+	@Autowired DiseaseDAO diseaseDAO;
 	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
 	public Map<String, List<Patient>> getPatients(){
 		List<Patient> patients = patientDAO.getPatients();
 		Map<String, List<Patient>> patientsMap = new HashMap<String, List<Patient>>();
@@ -41,12 +39,15 @@ public class PatientService {
 		return patientsMap;
 	}
 	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/countByDisease")
-	public TransformedInfo getPatientCountByDisease(){
+	public TransformedInfo getPatientCountByDiseaseChart(){
 		TransformedInfo info = new TransformedInfo();
 		info.setPatientByDiseaseChart(transformer.generatePatientsByDiseaseChart());
 		return info;
 	}
+	
+	public Map<String, BigInteger> getPatientCountByDisease(){
+		Map<String, BigInteger> patientCountByDisease = diseaseDAO.retrievePatientCountByDisease();
+		return patientCountByDisease;
+	}
+	
 }

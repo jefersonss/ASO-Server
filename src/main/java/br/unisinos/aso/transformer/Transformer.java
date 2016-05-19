@@ -53,6 +53,10 @@ public class Transformer {
 		return info;
 	}
 	
+	public Map<String, List<String>> getVitalSignsExams(Patient patient){
+		return buildResultsFromExamList(patient.getAllExams());
+	}
+	
 	private List<String> generateVitalSignsEvolutionChart(Patient patient){
 		List<String> urlList = new LinkedList<String>();
 		Map<String, List<String>> examResults = buildResultsFromExamList(patient.getAllExams());
@@ -87,8 +91,10 @@ public class Transformer {
         	chart.addXAxisLabels(AxisLabelsFactory.newAxisLabels(examResults.get(key+"2"), wrapperArray));
 	        
 	        urlList.add(chart.toURLString());
+	        System.out.println(chart.toURLString());
 		}
-		
+		System.out.println("####");
+		System.out.println(urlList);
 		return urlList;
 	}
 
@@ -205,7 +211,7 @@ public class Transformer {
 		
 		chart.setTitle("Diastolic/Systolic blood pressure comparison", Color.BLACK, 16);
 		chart.setGrid((50.0 / MAX_PRESSURE) * 20, 600, 3, 2);
-		
+		System.out.println(chart.toURLString());
 		return chart.toURLString();
 	}
 
